@@ -7,16 +7,34 @@
     <script>
         function validateInput(event) {
             const inputField = document.getElementById("userInput");
-            const regex = /^[a-zA-Z0-9\s]*$/; // Allows only letters, numbers, and spaces
-            if (!regex.test(inputField.value)) {
-                alert("Input can only contain letters, numbers, and spaces.");
-                event.preventDefault(); // Prevent form submission
+            const inputText = inputField.value;
+
+            // 1. Check for special characters
+            const regex = /^[a-zA-Z][a-zA-Z0-9\s]*$/; // Must start with a letter and only contain letters, numbers, and spaces
+            if (!regex.test(inputText)) {
+                alert("Input must start with a letter and can only contain letters, numbers, and spaces.");
+                event.preventDefault();
+                return;
+            }
+
+            // 2. Check minimum length
+            if (inputText.length < 3) {
+                alert("Input must be at least 3 characters long.");
+                event.preventDefault();
+                return;
+            }
+
+            // 3. Check maximum length
+            if (inputText.length > 50) {
+                alert("Input must not exceed 50 characters.");
+                event.preventDefault();
+                return;
             }
         }
 
         function validateOnInput() {
             const inputField = document.getElementById("userInput");
-            const regex = /^[a-zA-Z0-9\s]*$/; // Allows only letters, numbers, and spaces
+            const regex = /^[a-zA-Z][a-zA-Z0-9\s]*$/; // Only allow valid characters
             if (!regex.test(inputField.value)) {
                 inputField.value = inputField.value.replace(/[^a-zA-Z0-9\s]/g, ""); // Remove invalid characters
             }
@@ -24,7 +42,7 @@
 
         function displayInput(event) {
             event.preventDefault(); // Prevents the form from reloading the page
-            let inputText = document.getElementById("userInput").value;
+            const inputText = document.getElementById("userInput").value;
             document.getElementById("output").innerHTML = "<h2>You entered: " + inputText + "</h2>";
         }
     </script>
@@ -33,7 +51,7 @@
     <h1>Simple HTML Application</h1>
     <form onsubmit="validateInput(event); displayInput(event);">
         <label for="userInput">Enter text:</label>
-        <input type="text" id="userInput" name="userInput" required oninput="validateOnInput()" />
+        <input type="text" id="userInput" name="userInput" required maxlength="50" oninput="validateOnInput()" />
         <button type="submit">Submit</button>
     </form>
     

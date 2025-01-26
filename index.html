@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple HTML Application</title>
     <script>
+        function validateInput(event) {
+            const inputField = document.getElementById("userInput");
+            const regex = /^[a-zA-Z0-9\s]*$/; // Allows only letters, numbers, and spaces
+            if (!regex.test(inputField.value)) {
+                alert("Input can only contain letters, numbers, and spaces.");
+                event.preventDefault(); // Prevent form submission
+            }
+        }
+
+        function validateOnInput() {
+            const inputField = document.getElementById("userInput");
+            const regex = /^[a-zA-Z0-9\s]*$/; // Allows only letters, numbers, and spaces
+            if (!regex.test(inputField.value)) {
+                inputField.value = inputField.value.replace(/[^a-zA-Z0-9\s]/g, ""); // Remove invalid characters
+            }
+        }
+
         function displayInput(event) {
             event.preventDefault(); // Prevents the form from reloading the page
             let inputText = document.getElementById("userInput").value;
@@ -14,9 +31,9 @@
 </head>
 <body>
     <h1>Simple HTML Application</h1>
-    <form onsubmit="displayInput(event)">
+    <form onsubmit="validateInput(event); displayInput(event);">
         <label for="userInput">Enter text:</label>
-        <input type="text" id="userInput" name="userInput" required />
+        <input type="text" id="userInput" name="userInput" required oninput="validateOnInput()" />
         <button type="submit">Submit</button>
     </form>
     

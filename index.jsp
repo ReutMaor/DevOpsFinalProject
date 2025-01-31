@@ -40,9 +40,6 @@
     </div>
 
     <script>
-        const validUsernames = ["refael", "avichai", "chen", "maor", "reut"];
-        const validPassword = "123";
-
         function validateInput() {
             let input = document.getElementById("username").value;
             let regex = /^[a-zA-Z0-9]*$/;
@@ -56,24 +53,27 @@
         function login() {
             let username = document.getElementById("username").value;
             let password = document.getElementById("password").value;
-            let errorElement = document.getElementById("error");
-            let outputElement = document.getElementById("output");
-
-            if (!validUsernames.includes(username)) {
-                errorElement.innerText = "Invalid username.";
-                outputElement.innerText = "";
+            
+            if (document.getElementById("error").innerText !== "") {
+                document.getElementById("output").innerText = "Invalid input.";
                 return;
             }
-
-            if (password !== validPassword) {
-                errorElement.innerText = "Invalid password.";
-                outputElement.innerText = "";
-                return;
-            }
-
-            errorElement.innerText = "";
-            outputElement.innerText = "Login successful!";
+            
+            fetch("https://example.com/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("output").innerText = "Response: " + JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById("output").innerText = "Error: " + error;
+            });
         }
     </script>
 </body>
-</html>
+</html> 

@@ -32,7 +32,7 @@
 </head>
 <body>
     <div class="container">
-        <input type="text" id="username" placeholder="Enter username" oninput="validateInput()">
+        <input type="text" id="username" placeholder="Enter username">
         <input type="password" id="password" placeholder="Enter password">
         <button onclick="login()">Login</button>
         <p id="error" class="error"></p>
@@ -40,39 +40,29 @@
     </div>
 
     <script>
-        function validateInput() {
-            let input = document.getElementById("username").value;
-            let regex = /^[a-zA-Z0-9]*$/;
-            if (!regex.test(input)) {
-                document.getElementById("error").innerText = "Only English letters and numbers are allowed.";
-            } else {
-                document.getElementById("error").innerText = "";
-            }
-        }
-
         function login() {
+            let allowedUsernames = ["refael", "avichai", "chen", "maor", "reut"];
+            let allowedPassword = "123";
+            
             let username = document.getElementById("username").value;
             let password = document.getElementById("password").value;
+            let errorElement = document.getElementById("error");
+            let outputElement = document.getElementById("output");
             
-            if (document.getElementById("error").innerText !== "") {
-                document.getElementById("output").innerText = "Invalid input.";
+            if (!allowedUsernames.includes(username)) {
+                errorElement.innerText = "Invalid username.";
+                outputElement.innerText = "";
                 return;
             }
             
-            fetch("https://example.com/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("output").innerText = "Response: " + JSON.stringify(data);
-            })
-            .catch(error => {
-                document.getElementById("output").innerText = "Error: " + error;
-            });
+            if (password !== allowedPassword) {
+                errorElement.innerText = "Invalid password.";
+                outputElement.innerText = "";
+                return;
+            }
+            
+            errorElement.innerText = "";
+            outputElement.innerText = "Login successful!";
         }
     </script>
 </body>

@@ -28,6 +28,10 @@
             color: red;
             font-size: 14px;
         }
+        .success {
+            color: green;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -36,7 +40,7 @@
         <input type="password" id="password" placeholder="Enter password">
         <button onclick="login()">Login</button>
         <p id="error" class="error"></p>
-        <p id="output"></p>
+        <p id="output" class="success"></p>
     </div>
 
     <script>
@@ -49,15 +53,16 @@
             let errorElement = document.getElementById("error");
             let outputElement = document.getElementById("output");
             
+            errorElement.innerText = "";
+            outputElement.innerText = "";
+            
             if (!allowedUsernames.includes(username)) {
                 errorElement.innerText = "Invalid username.";
-                outputElement.innerText = "";
                 return;
             }
             
             if (password !== allowedPassword) {
                 errorElement.innerText = "Invalid password.";
-                outputElement.innerText = "";
                 return;
             }
             
@@ -70,11 +75,14 @@
             })
             .then(response => response.json())
             .then(data => {
-                errorElement.innerText = "";
-                outputElement.innerText = "Response: " + JSON.stringify(data);
+                if (data.success) {
+                    outputElement.innerText = "Login successful!";
+                } else {
+                    errorElement.innerText = "Server authentication failed.";
+                }
             })
             .catch(error => {
-                outputElement.innerText = "Error: " + error;
+                errorElement.innerText = "Error: " + error;
             });
         }
     </script>

@@ -61,8 +61,21 @@
                 return;
             }
             
-            errorElement.innerText = "";
-            outputElement.innerText = "Login successful!";
+            fetch("https://example.com/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                errorElement.innerText = "";
+                outputElement.innerText = "Response: " + JSON.stringify(data);
+            })
+            .catch(error => {
+                outputElement.innerText = "Error: " + error;
+            });
         }
     </script>
 </body>

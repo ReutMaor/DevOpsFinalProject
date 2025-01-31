@@ -28,62 +28,51 @@
             color: red;
             font-size: 14px;
         }
-        .success {
-            color: green;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <input type="text" id="username" placeholder="Enter username">
+        <input type="text" id="username" placeholder="Enter username" oninput="validateInput()">
         <input type="password" id="password" placeholder="Enter password">
         <button onclick="login()">Login</button>
         <p id="error" class="error"></p>
-        <p id="output" class="success"></p>
+        <p id="output"></p>
     </div>
 
     <script>
+        const validUsernames = ["refael", "avichai", "chen", "maor", "reut"];
+        const validPassword = "123";
+
+        function validateInput() {
+            let input = document.getElementById("username").value;
+            let regex = /^[a-zA-Z0-9]*$/;
+            if (!regex.test(input)) {
+                document.getElementById("error").innerText = "Only English letters and numbers are allowed.";
+            } else {
+                document.getElementById("error").innerText = "";
+            }
+        }
+
         function login() {
-            let allowedUsernames = ["refael", "avichai", "chen", "maor", "reut"];
-            let allowedPassword = "123";
-            
             let username = document.getElementById("username").value;
             let password = document.getElementById("password").value;
             let errorElement = document.getElementById("error");
             let outputElement = document.getElementById("output");
-            
-            errorElement.innerText = "";
-            outputElement.innerText = "";
-            
-            if (!allowedUsernames.includes(username)) {
+
+            if (!validUsernames.includes(username)) {
                 errorElement.innerText = "Invalid username.";
+                outputElement.innerText = "";
                 return;
             }
-            
-            if (password !== allowedPassword) {
+
+            if (password !== validPassword) {
                 errorElement.innerText = "Invalid password.";
+                outputElement.innerText = "";
                 return;
             }
-            
-            fetch("https://example.com/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    outputElement.innerText = "Login successful!";
-                } else {
-                    errorElement.innerText = "Server authentication failed.";
-                }
-            })
-            .catch(error => {
-                errorElement.innerText = "Error: " + error;
-            });
+
+            errorElement.innerText = "";
+            outputElement.innerText = "Login successful!";
         }
     </script>
 </body>

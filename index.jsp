@@ -66,7 +66,7 @@
                 return;
             }
             
-            fetch("http://localhost:9090/Refael_Maor_Reut_Chen_Avichai/", {
+            fetch("https://example.com/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
